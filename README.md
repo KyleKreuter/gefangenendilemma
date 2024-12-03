@@ -106,3 +106,10 @@ Das Punktesystem belohnt oder bestraft die Entscheidungen der Spieler wie folgt:
 
 ### Ziel des Wettbewerbs
 Das Ziel des Wettbewerbs ist es, eine möglichst effiziente und kluge Strategie zu entwickeln, die in unterschiedlichen Spielsituationen zu einer hohen Gesamtpunktzahl führt.
+
+
+### Testen der Algorithmen
+Um den programmierten Gefangenen zu testen, muss die Jar kompiliert werden und dann in den `competitors`-Ordner
+geschoben werden. Dieser wird dann automatisch geladen und getestet. Um die Wettbewerbs-jar zu starten, muss der Befehl
+`java -jar gefangenendilemma-1.0.0.jar` ausgeführt werden. Ein Gefangener, der alleine keine 600 Punkte errreicht, ist 
+überdurchschnittlich schlecht und wird es in einem Wettbewerb wahrscheinlich schwer haben.
