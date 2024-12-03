@@ -105,5 +105,4 @@ Das Punktesystem belohnt oder bestraft die Entscheidungen der Spieler wie folgt:
 * Betrügen beide Spieler, erhalten beide keine Punkte
 
 ### Ziel des Wettbewerbs
-Das Ziel des Wettbewerbs ist es, eine möglichst effiziente und kluge Strategie zu entwickeln, die in unterschiedlichen  
-Spielsituationen zu einer hohen Gesamtpunktzahl führt.
+Das Ziel des Wettbewerbs ist es, eine möglichst effiziente und kluge Strategie zu entwickeln, die in unterschiedlichen Spielsituationen zu einer hohen Gesamtpunktzahl führt.
