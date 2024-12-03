@@ -11,6 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -53,40 +56,56 @@ public final class Competition {
             System.exit(1);
             return;
         }
-        for (File jarFile : competitorJars) {
-            try (JarFile jar = new JarFile(jarFile)) {
-                JarEntry entry = jar.getJarEntry("prisoner.properties");
-                if (entry == null) {
-                    log.warn("Could not find prisoner.properties in {}", jarFile.getName());
-                    continue;
-                }
-                try (InputStream inputStream = jar.getInputStream(entry)) {
-                    Properties properties = new Properties();
-                    properties.load(inputStream);
 
-                    String prisonerEntry = properties.getProperty("prisoner.entry");
-                    if (prisonerEntry == null) {
-                        log.warn("Could not find prisoner.entry in prisoner.properties");
-                        continue;
-                    }
-                    String prisonerName = properties.getProperty("prisoner.name");
-                    if (prisonerName == null) {
-                        log.warn("Could not find prisoner.name in prisoner.properties");
-                        continue;
-                    }
-                    Class<?> clazz = Class.forName(prisonerEntry);
-                    Object oi = clazz.getDeclaredConstructor().newInstance();
-                    if (!(oi instanceof Prisoner prisoner)) {
-                        log.warn("{} did not specify a valid entrypoint", prisonerName);
-                        continue;
-                    }
-                    competitors.add(prisoner);
-                    scores.put(prisoner, 0);
-                }
-            } catch (IOException | ClassNotFoundException | NoSuchMethodException | InstantiationException |
-                     IllegalAccessException | InvocationTargetException e) {
-                log.error(e.getMessage(), e);
+        try {
+            URL[] jarUrls = new URL[competitorJars.length];
+            for (int i = 0; i < competitorJars.length; i++) {
+                jarUrls[i] = competitorJars[i].toURI().toURL();
             }
+
+            try (URLClassLoader classLoader = new URLClassLoader(jarUrls, this.getClass().getClassLoader())) {
+                for (File jarFile : competitorJars) {
+                    try (JarFile jar = new JarFile(jarFile)) {
+                        JarEntry entry = jar.getJarEntry("prisoner.properties");
+                        if (entry == null) {
+                            log.warn("Could not find prisoner.properties in {}", jarFile.getName());
+                            continue;
+                        }
+
+                        try (InputStream inputStream = jar.getInputStream(entry)) {
+                            Properties properties = new Properties();
+                            properties.load(inputStream);
+
+                            String prisonerEntry = properties.getProperty("prisoner.entry");
+                            if (prisonerEntry == null) {
+                                log.warn("Could not find prisoner.entry in prisoner.properties");
+                                continue;
+                            }
+                            String prisonerName = properties.getProperty("prisoner.name");
+                            if (prisonerName == null) {
+                                log.warn("Could not find prisoner.name in prisoner.properties");
+                                continue;
+                            }
+
+                            Class<?> clazz = classLoader.loadClass(prisonerEntry);
+                            Object oi = clazz.getDeclaredConstructor().newInstance();
+                            if (!(oi instanceof Prisoner prisoner)) {
+                                log.warn("{} did not specify a valid entrypoint", prisonerName);
+                                continue;
+                            }
+                            competitors.add(prisoner);
+                            scores.put(prisoner, 0);
+                        }
+                    } catch (IOException | ClassNotFoundException | NoSuchMethodException | InstantiationException |
+                             IllegalAccessException | InvocationTargetException e) {
+                        log.error("Error loading competitor from {}: {}", jarFile.getName(), e.getMessage(), e);
+                    }
+                }
+            }
+        } catch (MalformedURLException e) {
+            log.error("Malformed URL while trying to load competitors: {}", e.getMessage(), e);
+        } catch (IOException e) {
+            log.error("IO Exception while trying to create URLClassLoader: {}", e.getMessage(), e);
         }
     }
 
