@@ -1,9 +1,9 @@
 # Gefangenendilemma - Coding Competition
 
-Das [Gefangenendilemma](https://de.wikipedia.org/wiki/Gefangenendilemma) ist ein Gedankenexperiment aus der Spieltheorie. Es beschreibt ein mathematisches Spiel,  
+Das [Gefangenendilemma](https://de.wikipedia.org/wiki/Gefangenendilemma) ist ein Gedankenexperiment aus der Spieltheorie. Es beschreibt ein mathematisches Spiel,
 bei dem sich zwei Akteure, die „Spieler“, unabhängig voneinander und ohne Rücksprache zwischen zwei  
-Verhaltensweisen entscheiden müssen. Der Erfolg für den Einzelnen hängt stark von der Entscheidung des jeweils  
-anderen ab, wodurch ein interessantes Spannungsverhältnis entsteht.
+Verhaltensweisen entscheiden müssen. Der Erfolg für den Einzelnen hängt stark von der Entscheidung des 
+jeweils anderen ab, wodurch ein interessantes Spannungsverhältnis entsteht.
 
 ## Implementierung
 
@@ -43,8 +43,8 @@ zu definieren.
    ```
    
 3. **Einen Client erstellen**  
-   Nachdem du das Projekt erfolgreich gebaut hast, kannst du deinen eigenen Gefangenen (Spieler) programmieren,  
-   indem du das Interface `Prisoner` implementierst. Erstelle hierzu eine neue Klasse in einem neuen Projekt und  
+   Nachdem du das Projekt erfolgreich gebaut hast, kannst du deinen eigenen Gefangenen (Spieler) programmieren,
+   indem du das Interface `Prisoner` implementierst. Erstelle hierzu eine neue Klasse in einem neuen Projekt und
    implementiere die folgenden Methoden des Prisoner Interfaces:
    ```java
     package de.meinname.gefangenendilemma.client;
@@ -74,7 +74,7 @@ zu definieren.
    ```
    
 4. **Client registrieren**  
-   Damit dein Client am Wettbewerb teilnehmen kann, musst du ihn als `-jar`-Datei packen und in den competitors-  
+   Damit dein Client am Wettbewerb teilnehmen kann, musst du ihn als `-jar`-Datei packen und in den competitors-
    Ordner legen. Dazu erstelle eine Datei `prisoner.properties` unter `resources`, um wichtige Informationen anzugeben:
    ```properties
    prisoner.entry=de.meinname.gefangenendilemma.client.MyPrisoner
