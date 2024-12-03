@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 public final class Competition {
 
@@ -24,6 +25,18 @@ public final class Competition {
 
     public Competition() throws IOException {
         competitionSpecification = new CompetitionSpecification();
+    }
+
+    public Competition(Set<Prisoner> prisoners, CompetitionSpecification specification) {
+        log.warn("You've invoked the testing constructor; this constructor is for testing-purpose only");
+        this.competitors.addAll(prisoners);
+        this.competitionSpecification = specification;
+        this.scores.putAll(prisoners.stream().collect(Collectors.toMap(prisoner -> prisoner, prisoner -> 0)));
+        letTheMessBegin();
+        evaluateTheMess();
+    }
+
+    public void start() {
         loadCompetitors();
         letTheMessBegin();
         evaluateTheMess();
