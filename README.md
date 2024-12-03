@@ -23,7 +23,7 @@ zu definieren.
    im Terminal aus:
 
    ```sh
-   git clone https://github.com/dein-username/gefangenendilemma.git
+   git clone https://github.com/KyleKreuter/gefangenendilemma.git
    cd gefangenendilemma
    ```
 
