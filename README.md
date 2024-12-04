@@ -111,5 +111,5 @@ Das Ziel des Wettbewerbs ist es, eine möglichst effiziente und kluge Strategie 
 ### Testen der Algorithmen
 Um den programmierten Gefangenen zu testen, muss die Jar kompiliert werden und dann in den `competitors`-Ordner
 geschoben werden. Dieser wird dann automatisch geladen und getestet. Um die Wettbewerbs-jar zu starten, muss der Befehl
-`java -jar gefangenendilemma-1.0.0.jar` ausgeführt werden. Ein Gefangener, der alleine keine 600 Punkte errreicht, ist 
+`java -jar gefangenendilemma-1.0.0.jar` ausgeführt werden. Ein Gefangener, der alleine keine 200 Punkte errreicht, ist 
 überdurchschnittlich schlecht und wird es in einem Wettbewerb wahrscheinlich schwer haben.
