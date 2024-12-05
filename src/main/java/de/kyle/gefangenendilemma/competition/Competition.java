@@ -66,6 +66,8 @@ public final class Competition {
             try (URLClassLoader classLoader = new URLClassLoader(jarUrls, this.getClass().getClassLoader())) {
                 for (File jarFile : competitorJars) {
                     try (JarFile jar = new JarFile(jarFile)) {
+                        loadAllClassesFromJar(jar, classLoader);
+
                         JarEntry entry = jar.getJarEntry("prisoner.properties");
                         if (entry == null) {
                             log.warn("Could not find prisoner.properties in {}", jarFile.getName());
@@ -106,6 +108,22 @@ public final class Competition {
             log.error("Malformed URL while trying to load competitors: {}", e.getMessage(), e);
         } catch (IOException e) {
             log.error("IO Exception while trying to create URLClassLoader: {}", e.getMessage(), e);
+        }
+    }
+
+    private void loadAllClassesFromJar(JarFile jar, URLClassLoader classLoader) {
+        Enumeration<JarEntry> entries = jar.entries();
+        while (entries.hasMoreElements()) {
+            JarEntry entry = entries.nextElement();
+            if (entry.isDirectory() || !entry.getName().endsWith(".class")) {
+                continue;
+            }
+            String className = entry.getName().replace(".class", "").replace("/", ".");
+            try {
+                classLoader.loadClass(className);
+            } catch (ClassNotFoundException e) {
+                log.warn("Could not load class: {}", className, e);
+            }
         }
     }
 
