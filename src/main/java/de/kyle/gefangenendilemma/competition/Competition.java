@@ -50,8 +50,7 @@ public final class Competition {
             competitorsFolder.mkdir();
         }
         File[] competitorJars = competitorsFolder.listFiles((dir, name) -> name.endsWith(".jar"));
-        if (competitorJars == null || competitorJars.length == 0) {
-            log.warn("No competitors found. Shutting down.");
+        if (competitorJars == null) {
             return;
         }
         for (File jarFile : competitorJars) {
@@ -113,7 +112,6 @@ public final class Competition {
 
     private void letTheMessBegin() {
         if (competitors.isEmpty()) {
-            log.warn("No competitors were registered. Shutting down.");
             return;
         }
         for (Prisoner competitor : competitors) {
@@ -163,6 +161,7 @@ public final class Competition {
 
     private void evaluateTheMess() {
         if (competitors.isEmpty()) {
+            log.warn("No competitors found. Shutting down.");
             return;
         }
         log.info(" ");
