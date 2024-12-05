@@ -66,7 +66,6 @@ public final class Competition {
             try (URLClassLoader classLoader = new URLClassLoader(jarUrls, this.getClass().getClassLoader())) {
                 for (File jarFile : competitorJars) {
                     try (JarFile jar = new JarFile(jarFile)) {
-                        loadAllClassesFromJar(jar, classLoader);
 
                         JarEntry entry = jar.getJarEntry("prisoner.properties");
                         if (entry == null) {
@@ -89,6 +88,7 @@ public final class Competition {
                                 continue;
                             }
 
+                            loadAllClassesFromJar(jar, classLoader);
                             Class<?> clazz = classLoader.loadClass(prisonerEntry);
                             Object oi = clazz.getDeclaredConstructor().newInstance();
                             if (!(oi instanceof Prisoner prisoner)) {
