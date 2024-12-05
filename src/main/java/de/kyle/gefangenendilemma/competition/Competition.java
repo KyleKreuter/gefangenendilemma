@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
@@ -53,61 +52,46 @@ public final class Competition {
         File[] competitorJars = competitorsFolder.listFiles((dir, name) -> name.endsWith(".jar"));
         if (competitorJars == null || competitorJars.length == 0) {
             log.warn("No competitors found. Shutting down.");
-            System.exit(1);
             return;
         }
+        for (File jarFile : competitorJars) {
+            try (JarFile jar = new JarFile(jarFile)) {
 
-        try {
-            URL[] jarUrls = new URL[competitorJars.length];
-            for (int i = 0; i < competitorJars.length; i++) {
-                jarUrls[i] = competitorJars[i].toURI().toURL();
-            }
+                JarEntry entry = jar.getJarEntry("prisoner.properties");
+                if (entry == null) {
+                    log.warn("Could not find prisoner.properties in {}", jarFile.getName());
+                    continue;
+                }
+                try (InputStream inputStream = jar.getInputStream(entry)) {
+                    Properties properties = new Properties();
+                    properties.load(inputStream);
 
-            try (URLClassLoader classLoader = new URLClassLoader(jarUrls, this.getClass().getClassLoader())) {
-                for (File jarFile : competitorJars) {
-                    try (JarFile jar = new JarFile(jarFile)) {
-
-                        JarEntry entry = jar.getJarEntry("prisoner.properties");
-                        if (entry == null) {
-                            log.warn("Could not find prisoner.properties in {}", jarFile.getName());
+                    String prisonerEntry = properties.getProperty("prisoner.entry");
+                    if (prisonerEntry == null) {
+                        log.warn("Could not find prisoner.entry in prisoner.properties");
+                        continue;
+                    }
+                    String prisonerName = properties.getProperty("prisoner.name");
+                    if (prisonerName == null) {
+                        log.warn("Could not find prisoner.name in prisoner.properties");
+                        continue;
+                    }
+                    try (URLClassLoader classLoader = new URLClassLoader(new URL[]{jarFile.toURI().toURL()}, this.getClass().getClassLoader())) {
+                        loadAllClassesFromJar(jar, classLoader);
+                        Class<?> clazz = classLoader.loadClass(prisonerEntry);
+                        Object oi = clazz.getDeclaredConstructor().newInstance();
+                        if (!(oi instanceof Prisoner prisoner)) {
+                            log.warn("{} did not specify a valid entrypoint", prisonerName);
                             continue;
                         }
-
-                        try (InputStream inputStream = jar.getInputStream(entry)) {
-                            Properties properties = new Properties();
-                            properties.load(inputStream);
-
-                            String prisonerEntry = properties.getProperty("prisoner.entry");
-                            if (prisonerEntry == null) {
-                                log.warn("Could not find prisoner.entry in prisoner.properties");
-                                continue;
-                            }
-                            String prisonerName = properties.getProperty("prisoner.name");
-                            if (prisonerName == null) {
-                                log.warn("Could not find prisoner.name in prisoner.properties");
-                                continue;
-                            }
-
-                            loadAllClassesFromJar(jar, classLoader);
-                            Class<?> clazz = classLoader.loadClass(prisonerEntry);
-                            Object oi = clazz.getDeclaredConstructor().newInstance();
-                            if (!(oi instanceof Prisoner prisoner)) {
-                                log.warn("{} did not specify a valid entrypoint", prisonerName);
-                                continue;
-                            }
-                            competitors.add(prisoner);
-                            scores.put(prisoner, 0);
-                        }
-                    } catch (IOException | ClassNotFoundException | NoSuchMethodException | InstantiationException |
-                             IllegalAccessException | InvocationTargetException e) {
-                        log.error("Error loading competitor from {}: {}", jarFile.getName(), e.getMessage(), e);
+                        competitors.add(prisoner);
+                        scores.put(prisoner, 0);
                     }
                 }
+            } catch (IOException | ClassNotFoundException | NoSuchMethodException | InstantiationException |
+                     IllegalAccessException | InvocationTargetException e) {
+                log.error("Error loading competitor from {}: {}", jarFile.getName(), e.getMessage(), e);
             }
-        } catch (MalformedURLException e) {
-            log.error("Malformed URL while trying to load competitors: {}", e.getMessage(), e);
-        } catch (IOException e) {
-            log.error("IO Exception while trying to create URLClassLoader: {}", e.getMessage(), e);
         }
     }
 
@@ -130,7 +114,6 @@ public final class Competition {
     private void letTheMessBegin() {
         if (competitors.isEmpty()) {
             log.warn("No competitors were registered. Shutting down.");
-            System.exit(1);
             return;
         }
         for (Prisoner competitor : competitors) {
@@ -179,6 +162,9 @@ public final class Competition {
     }
 
     private void evaluateTheMess() {
+        if (competitors.isEmpty()) {
+            return;
+        }
         log.info(" ");
         log.info("Evaluation:");
         List<Map.Entry<Prisoner, Integer>> result = scores.entrySet()
