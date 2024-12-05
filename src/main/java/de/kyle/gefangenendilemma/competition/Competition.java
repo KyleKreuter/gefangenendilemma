@@ -125,28 +125,28 @@ public final class Competition {
                 log.info("{}: {}", competitor.getName(), scores.get(competitor));
                 log.info("{}: {}", opponent.getName(), scores.get(opponent));
                 for (int i = 0; i < competitionSpecification.getRounds(); i++) {
-                    PrisonerMessResult competitorMessResult = competitor.messAround();
-                    PrisonerMessResult opponentMessResult = opponent.messAround();
+                    PrisonerMessResult competitorMessResult = competitor.messAround(opponent.getName());
+                    PrisonerMessResult opponentMessResult = opponent.messAround(competitor.getName());
                     switch (competitorMessResult) {
                         case BETRAY -> {
                             if (opponentMessResult.equals(PrisonerMessResult.BETRAY)) {
-                                competitor.onPostMessEvent(new PostMessEvent(opponent, opponentMessResult, 0));
-                                opponent.onPostMessEvent(new PostMessEvent(competitor, competitorMessResult, 0));
+                                competitor.onPostMessEvent(new PostMessEvent(opponent.getName(), opponentMessResult, 0));
+                                opponent.onPostMessEvent(new PostMessEvent(competitor.getName(), competitorMessResult, 0));
                             } else {
-                                competitor.onPostMessEvent(new PostMessEvent(opponent, opponentMessResult, competitionSpecification.getBetrayPoints()));
+                                competitor.onPostMessEvent(new PostMessEvent(opponent.getName(), opponentMessResult, competitionSpecification.getBetrayPoints()));
                                 modifyPoints(competitor, competitionSpecification.getBetrayPoints());
-                                opponent.onPostMessEvent(new PostMessEvent(competitor, competitorMessResult, 0));
+                                opponent.onPostMessEvent(new PostMessEvent(competitor.getName(), competitorMessResult, 0));
                             }
                         }
                         case COOPERATE -> {
                             if (opponentMessResult.equals(PrisonerMessResult.COOPERATE)) {
-                                competitor.onPostMessEvent(new PostMessEvent(opponent, opponentMessResult, competitionSpecification.getCooperatePoints()));
-                                opponent.onPostMessEvent(new PostMessEvent(competitor, competitorMessResult, competitionSpecification.getCooperatePoints()));
+                                competitor.onPostMessEvent(new PostMessEvent(opponent.getName(), opponentMessResult, competitionSpecification.getCooperatePoints()));
+                                opponent.onPostMessEvent(new PostMessEvent(competitor.getName(), competitorMessResult, competitionSpecification.getCooperatePoints()));
                                 modifyPoints(competitor, competitionSpecification.getCooperatePoints());
                                 modifyPoints(opponent, competitionSpecification.getCooperatePoints());
                             } else {
-                                competitor.onPostMessEvent(new PostMessEvent(opponent, opponentMessResult, 0));
-                                opponent.onPostMessEvent(new PostMessEvent(competitor, competitorMessResult, competitionSpecification.getBetrayPoints()));
+                                competitor.onPostMessEvent(new PostMessEvent(opponent.getName(), opponentMessResult, 0));
+                                opponent.onPostMessEvent(new PostMessEvent(competitor.getName(), competitorMessResult, competitionSpecification.getBetrayPoints()));
                                 modifyPoints(opponent, competitionSpecification.getBetrayPoints());
                             }
                         }

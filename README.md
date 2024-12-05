@@ -61,7 +61,7 @@ zu definieren.
         }
     
         @Override
-        public PrisonerMessResult messAround() {
+        public PrisonerMessResult messAround(String opponent) {
             // Implementiere hier deine Strategie: BETRAY oder COOPERATE
             return PrisonerMessResult.COOPERATE; // Beispiel: immer kooperieren
         }
@@ -93,7 +93,7 @@ Das `Prisoner` Interface definiert die Spielregeln, die jeder Teilnehmer befolge
 
 ### Regeln des Spiels
 Das Spiel folgt einer Reihe von festgelegten Regeln:
-* Das Spiel wird **standardmäßig über 100 Runden** gespielt
+* Das Spiel wird **standardmäßig über 100 Runden** gespielt (Nicht fix!)
 * Jeder Spieler tritt genau zweimal gegen einen Gegner an
 
 ### Punktesystem

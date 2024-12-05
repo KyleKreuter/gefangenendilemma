@@ -22,9 +22,10 @@ public interface Prisoner {
      * Represents the action of the prisoner during a round of the dilemma.
      * This method is called each round to determine whether the prisoner will "COOPERATE" or "BETRAY".
      *
+     * @param opponent The opponent you're about to mess with.
      * @return The decision result of the prisoner as a PrisonerMessResult.
      */
-    PrisonerMessResult messAround();
+    PrisonerMessResult messAround(String opponent);
 
     /**
      * This method is called after each round of the competition to provide the result of that round.

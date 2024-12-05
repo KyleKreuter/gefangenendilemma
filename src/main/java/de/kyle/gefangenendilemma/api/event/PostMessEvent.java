@@ -1,6 +1,5 @@
 package de.kyle.gefangenendilemma.api.event;
 
-import de.kyle.gefangenendilemma.api.Prisoner;
 import de.kyle.gefangenendilemma.api.result.PrisonerMessResult;
 
 
@@ -13,7 +12,7 @@ import de.kyle.gefangenendilemma.api.result.PrisonerMessResult;
  * @param points The number of points earned in this round.
  */
 public record PostMessEvent(
-        Prisoner opponent,
+        String opponent,
         PrisonerMessResult result,
         int points
 ) {
