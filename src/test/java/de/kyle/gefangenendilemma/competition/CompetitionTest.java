@@ -28,8 +28,8 @@ public class CompetitionTest {
         when(mockPrisoner1.getName()).thenReturn("Prisoner 1");
         when(mockPrisoner2.getName()).thenReturn("Prisoner 2");
 
-        when(mockPrisoner1.messAround()).thenReturn(PrisonerMessResult.COOPERATE);
-        when(mockPrisoner2.messAround()).thenReturn(PrisonerMessResult.BETRAY);
+        when(mockPrisoner1.messAround(mockPrisoner2.getName())).thenReturn(PrisonerMessResult.COOPERATE);
+        when(mockPrisoner2.messAround(mockPrisoner1.getName())).thenReturn(PrisonerMessResult.BETRAY);
 
         competitionSpecification = new CompetitionSpecification();
     }
@@ -42,8 +42,8 @@ public class CompetitionTest {
 
         Competition competition = new Competition(prisoners, competitionSpecification);
 
-        verify(mockPrisoner1, atLeast(200)).messAround();
-        verify(mockPrisoner2, atLeast(200)).messAround();
+        verify(mockPrisoner1, atLeast(200)).messAround(mockPrisoner2.getName());
+        verify(mockPrisoner2, atLeast(200)).messAround(mockPrisoner1.getName());
 
         verify(mockPrisoner1, atLeast(200)).onPostMessEvent(any(PostMessEvent.class));
         verify(mockPrisoner2, atLeast(200)).onPostMessEvent(any(PostMessEvent.class));
