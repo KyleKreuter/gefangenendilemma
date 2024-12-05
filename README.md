@@ -95,7 +95,6 @@ Das `Prisoner` Interface definiert die Spielregeln, die jeder Teilnehmer befolge
 Das Spiel folgt einer Reihe von festgelegten Regeln:
 * Das Spiel wird **standardmäßig über 100 Runden** gespielt
 * Jeder Spieler tritt genau zweimal gegen einen Gegner an
-* Jeder Spieler tritt genau einmal gegen sich selbst an
 
 ### Punktesystem
 Das Punktesystem belohnt oder bestraft die Entscheidungen der Spieler wie folgt:

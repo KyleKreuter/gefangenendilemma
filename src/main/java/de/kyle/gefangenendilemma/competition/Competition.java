@@ -117,6 +117,9 @@ public final class Competition {
         }
         for (Prisoner competitor : competitors) {
             for (Prisoner opponent : competitors) {
+                if (competitor.equals(opponent)) {
+                    continue;
+                }
                 log.info("{} will compete against {}", competitor.getName(), opponent.getName());
                 log.info("Points before competition:");
                 log.info("{}: {}", competitor.getName(), scores.get(competitor));
