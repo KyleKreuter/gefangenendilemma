@@ -86,15 +86,18 @@ zu definieren.
 Das `Prisoner` Interface definiert die Spielregeln, die jeder Teilnehmer befolgen muss:  
 * `getName()`: Gibt den Namen des Gefangenen zurück. Dieser Name dient zur eindeutigen Identifizierung jedes   
   Teilnehmers
-* `messAround()`: Bestimmt die Entscheidung des Gefangenen während einer Runde des Dilemmas, ob er  
+* `messAround(String opponent)`: Bestimmt die Entscheidung des Gefangenen während einer Runde des Dilemmas, ob er  
   kooperieren oder betrügen möchte
 * `onPostMessEvent(PostMessEvent postMessEvent)`: Wird nach jeder Runde aufgerufen und übergibt die  
   Ergebnisse der letzten Runde. Diese Informationen können in zukünftigen Runden genutzt werden
 
 ### Regeln des Spiels
 Das Spiel folgt einer Reihe von festgelegten Regeln:
-* Das Spiel wird **standardmäßig über 100 Runden** gespielt (Nicht fix!)
-* Jeder Spieler tritt genau zweimal gegen einen Gegner an
+* Externe API Calls sind verboten
+* Gewonnen hat der Spieler, der am Ende insgesamt die meisten Punkte erzielt
+* Jeder Spieler tritt genau zweimal gegen einen Gegner an und spielt eine feste Anzahl an Runden
+* Spieler dürfen mehrere Prisoner programmieren und ins Rennen schicken, diese dürfen aber nicht aufeinander reagieren
+* Das Verändern von Spielklassen zur Laufzeit (z.B. durch Reflections) ist nicht erlaubt
 
 ### Punktesystem
 Das Punktesystem belohnt oder bestraft die Entscheidungen der Spieler wie folgt:
