@@ -98,6 +98,7 @@ Das Spiel folgt einer Reihe von festgelegten Regeln:
 * Jeder Spieler tritt genau zweimal gegen einen Gegner an und spielt eine feste Anzahl an Runden
 * Spieler dürfen mehrere Prisoner programmieren und ins Rennen schicken, diese dürfen aber nicht aufeinander reagieren
 * Das Verändern von Spielklassen zur Laufzeit (z.B. durch Reflections) ist nicht erlaubt
+* Eine Strategie, die durchgehend COOPERATE zurückgibt, ist nicht erlaubt
 
 ### Punktesystem
 Das Punktesystem belohnt oder bestraft die Entscheidungen der Spieler wie folgt:
