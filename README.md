@@ -101,7 +101,7 @@ Das Spiel folgt einer Reihe von festgelegten Regeln:
 
 ### Punktesystem
 Das Punktesystem belohnt oder bestraft die Entscheidungen der Spieler wie folgt:
-* Betrügt ein Spieler, während der Mitspieler kooperiert, erhält der Betrügende 3 Punkte, und der kooperierende  
+* Betrügt ein Spieler, während der Mitspieler kooperiert, erhält der Betrügende 3 Punkte, und der kooperierende
   Mitspieler geht leer aus
 * Kooperieren beide Spieler, erhalten beide jeweils 1 Punkt
 * Betrügen beide Spieler, erhalten beide keine Punkte
