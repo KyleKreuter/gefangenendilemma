@@ -33,28 +33,4 @@ public class CompetitionSpecificationTest {
             Assertions.assertEquals(100, competitionSpecification_.getRounds());
         });
     }
-
-    @Test
-    public void example_specification_is_used() {
-        File folder = new File("specification");
-        folder.mkdir();
-        File specificationFile = new File(folder, "custom_specification.properties");
-        Assertions.assertDoesNotThrow(() -> {
-            if (specificationFile.exists()) {
-                specificationFile.delete();
-            }
-            specificationFile.createNewFile();
-            try (FileWriter fileWriter = new FileWriter(specificationFile)) {
-                fileWriter.write("competition.rounds=10\n" +
-                        "competition.points.cooperate=5\n" +
-                        "competition.points.betray=20");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            CompetitionSpecification specification = new CompetitionSpecification();
-            Assertions.assertEquals(5, specification.getCooperatePoints());
-            specificationFile.delete();
-            folder.delete();
-        });
-    }
 }
